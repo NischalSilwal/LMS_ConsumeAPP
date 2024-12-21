@@ -1,0 +1,189 @@
+﻿@model IEnumerable<LMS_ConsumeAPP.Domain.Model.Student>
+
+@{
+    ViewData["Title"] = "Student Info";
+}
+
+<style>
+    body, html {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+    }
+
+    .header {
+        height: 71px;
+    }
+
+    .body {
+        background: #F2F2F2;
+        padding: 35px 40px 0 40px;
+        height: calc(100% - 71px);
+        overflow-y: auto;
+    }
+
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        background: #F2F2F2;
+        overflow: hidden;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+        .table thead {
+            background: #5E5E5E;
+            color: white;
+        }
+
+            .table thead th {
+                padding: 14px;
+                text-align: center;
+                font-weight: 600;
+            }
+
+        .table tbody tr {
+            border-bottom: 1px solid #E0E0E0;
+        }
+
+            .table tbody tr:last-child {
+                border-bottom: none;
+            }
+
+        .table tbody td {
+            padding: 14px;
+            color: #333;
+            font-size: 14px;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+    .btn {
+        padding: 8px 20px;
+        font-size: 14px;
+        font-weight: 600;
+        border: none;
+        border-radius: 4px;
+    }
+
+    .btn-Action {
+        width: 128px;
+        height: 52px;
+        background-color: #C7B303; /* Yellow for Edit */
+        color: white;
+        padding: 14px 20px;
+        border: none;
+        border-radius: 20px; /* Rounded corners */
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer; /* Pointer on hover */
+    }
+
+    .table tbody td:last-child {
+        width: 300px;
+        margin: 0;
+        text-align: center;
+    }
+
+    .table tbody td:first-child {
+        width: 100px;
+        margin: 0;
+        text-align: center;
+    }
+
+    .btn:hover {
+        opacity: 0.9; /* Subtle hover effect */
+    }
+
+    .form-label {
+        font-size: 14px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .form-control {
+        height: 65px;
+        background-color: #D9D9D9;
+        border: none;
+        border-radius: 4px;
+    }
+
+    .submit-btn {
+        background-color: #255D81;
+        width: 260px;
+        color: white;
+        padding: 21px 56px;
+        border: none;
+        border-radius: 20px;
+    }
+</style>
+
+<div style="width: 100%; display: flex; align-items: center;" class="header">
+    <img src="~/images/PageLogo/StudentLogo.png" alt="Student Icon" style="width: 35px; height: 35px; margin-left: 40px; margin-right: 9px;">
+    <h2 style="margin: 0 0 0 10px;">Add Student</h2>
+</div>
+
+<div class="body">
+    <div class="card mb-4" style="background: #E3E3E3; padding: 22px 34px; border: none; border-radius: 8px; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);">
+        <form asp-action="AddStudent" method="post">
+            <div class="mb-3">
+                <label class="form-label">Student ID</label>
+                <input type="text" class="form-control" name="StudentId"  />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Student Name</label>
+                <input type="text" class="form-control" name="Name" required />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input type="email" class="form-control" name="Email" required />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Contact Number</label>
+                <input type="text" class="form-control" name="ContactNumber" required />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Department</label>
+                <input type="text" class="form-control" name="Department" required />
+            </div>
+            <button type="submit" class="submit-btn">Add Student</button>
+        </form>
+    </div>
+
+    <div style="background: #E3E3E3; padding: 22px 34px; border: none; border-radius: 8px; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);">
+        <h3 style="font-weight: 600; padding-bottom: 14px; font-size: 28px; color: #333;">Student List</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Student ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Contact</th>
+                    <th>Department</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var student in Model)
+                {
+                    <tr>
+                        <td>@student.StudentId</td>
+                        <td>@student.Name</td>
+                        <td>@student.Email</td>
+                        <td>@student.ContactNumber</td>
+                        <td>@student.Department</td>
+                        <td class="text-center">
+                              <form asp-action="EditStudent" method="post" style="display:inline;">
+                                <input type="hidden" name="StudentId" value="@student.StudentId" />
+                                <button type="submit" class="btn btn-Action" style="background:#B7A522; margin-right:8px;">Edit</button>
+                            </form>
+                            <form asp-action="DeleteStudent" method="post" style="display:inline;">
+                                <input type="hidden" name="id" value="@student.StudentId" />
+                                <button type="submit" class="btn btn-Action" style="background:#D13A3D;">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

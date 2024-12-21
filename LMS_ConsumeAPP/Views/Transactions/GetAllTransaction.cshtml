@@ -1,0 +1,159 @@
+﻿@model IEnumerable<LMS_ConsumeAPP.Domain.Model.Transaction>
+
+@{
+    ViewData["Title"] = "GetAllTransaction";
+}
+
+<style>
+    body, html {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+    }
+
+    .header {
+        height: 71px;
+        background-color: #255D81;
+        color: white;
+        padding: 0 40px;
+        display: flex;
+        align-items: center;
+    }
+
+        .header img {
+            width: 35px;
+            height: 35px;
+            margin-right: 10px;
+        }
+
+        .header h2 {
+            margin: 0;
+            margin: 0;
+            font-family: 'Montserrat', sans-serif; /* Apply Montserrat Font */
+        }
+
+    .table-wrapper {
+        background: #F2F2F2;
+        padding: 35px 40px;
+        height: calc(100% - 71px);
+        overflow-y: auto;
+    }
+
+    .table {
+        width: 100%;
+        background-color: #E3E3E3;
+        border-radius: 8px;
+        border-collapse: collapse;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+
+
+        .table th, .table td {
+            padding: 12px;
+            text-align: left;
+        }
+
+        .table th {
+            background-color: #C7B303; /* Yellow for table header */
+            color: white;
+            font-weight: bold;
+        }
+
+        .table td {
+            background-color: #D9D9D9;
+        }
+
+    .btn-action {
+        padding: 8px 20px;
+        font-size: 14px;
+        font-weight: 600;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .btn-edit {
+        background-color: #C7B303; /* Yellow for Edit */
+        color: white;
+    }
+
+    .btn-details {
+        background-color: #255D81; /* Blue for Details */
+        color: white;
+    }
+
+    .btn-delete {
+        background-color: #F44336; /* Red for Delete */
+        color: white;
+    }
+
+    .btn-action:hover {
+        opacity: 0.9;
+    }
+
+</style>
+
+<div class="header">
+    <img src="~/images/NavbarLogo/Issue.png" alt="Transaction Icon">
+    <h2 style="margin: 0 0 0 10px;">Transaction</h2>
+</div>
+
+<div class="table-wrapper">
+    <!-- Add Transaction Form -->
+    <form asp-action="AddTransaction" asp-controller="Transaction" method="post" style="margin-bottom: 20px;">
+        <div>
+            <label>Student Name:</label>
+            <input type="text" name="StudentName" required />
+        </div>
+        <div>
+            <label>Username:</label>
+            <input type="text" name="Username" required />
+        </div>
+        <div>
+            <label>Book Title:</label>
+            <input type="text" name="BookTitle" required />
+        </div>
+        <div>
+            <label>Transaction Type:</label>
+            <select name="TransactionType" required>
+                <option value="Issue">Issue</option>
+                <option value="Return">Return</option>
+            </select>
+        </div>
+        <button type="submit" class="btn-action btn-edit">Add Transaction</button>
+    </form>
+
+    <!-- Display Transactions Table -->
+    <table class="table">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.First().TransactionId)</th>
+                <th>@Html.DisplayNameFor(model => model.First().StudentName)</th>
+                <th>@Html.DisplayNameFor(model => model.First().Username)</th>
+                <th>@Html.DisplayNameFor(model => model.First().BookTitle)</th>
+                <th>@Html.DisplayNameFor(model => model.First().TransactionType)</th>
+                <th>@Html.DisplayNameFor(model => model.First().Date)</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.TransactionId</td>
+                    <td>@item.StudentName</td>
+                    <td>@item.Username</td>
+                    <td>@item.BookTitle</td>
+                    <td>@item.TransactionType</td>
+                    <td>@item.Date.ToString("g")</td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.TransactionId }, new { @class = "btn-action btn-edit" }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.TransactionId }, new { @class = "btn-action btn-details" }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.TransactionId }, new { @class = "btn-action btn-delete" })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
