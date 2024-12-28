@@ -13,14 +13,14 @@ namespace LMS_ConsumeAPP.Controllers
             _authorRepository = authorRepository;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> IndexAuthor()
         {
             var authors = await _authorRepository.GetAllAuthorsAsync(); // Ensure this returns a collection
             return View(authors); // authors should be IEnumerable<AuthorDto> or List<AuthorDto>
         }
 
 
-        public async Task<IActionResult> Details(int id)
+        public async Task<IActionResult> DetailsAuthor(int id)
         {
             var author = await _authorRepository.GetAuthorByIdAsync(id);
             if (author == null)
@@ -30,75 +30,90 @@ namespace LMS_ConsumeAPP.Controllers
         }
 
         // Create GET
-        public IActionResult Create()
+        public IActionResult CreateAuthor()
         {
-            return View();
-        }
-
-        // Create POST
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(AuthorDto authorDto)
-        {
-            if (ModelState.IsValid)
+            var authorDto = new AuthorDto
             {
-                await _authorRepository.AddAuthorAsync(authorDto);
-                return RedirectToAction(nameof(Index));
-            }
+                BookIds = new List<int>()
+            };
             return View(authorDto);
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateAuthor(AuthorDto authorDto)
+        {
+            try
+            {
+                // Initialize BookIds if null
+                authorDto.BookIds ??= new List<int>();
 
-        //// Edit GET
-        //public async Task<IActionResult> Edit(int id)
-        //{
-        //    var author = await _authorRepository.GetAuthorByIdAsync(id);
-        //    if (author == null)
-        //        return NotFound();
+                // Remove BookIds validation errors since it's optional
+                ModelState.Remove("BookIds");
 
-        //    // Pass the author data and set IsEdit flag to true
-        //    ViewBag.IsEdit = true;
-        //    ViewBag.Author = author;
-        //    return View(author);
-        //}
-
-        //// Edit POST
+                if (ModelState.IsValid)
+                {
+                    var authorId = await _authorRepository.AddAuthorAsync(authorDto);
+                    return RedirectToAction(nameof(IndexAuthor));
+                }
+                return View(authorDto);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                ModelState.AddModelError("", "An error occurred while creating the author.");
+                return View(authorDto);
+            }
+        }
+        //// Create POST
         //[HttpPost]
         //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Edit(int id, AuthorDto authorDto)
+        //public async Task<IActionResult> CreateAuthor(AuthorDto authorDto)
         //{
-        //    if (id != authorDto.AuthorId || !ModelState.IsValid)
-        //        return BadRequest();
-
-        //    await _authorRepository.UpdateAuthorAsync(id, authorDto);
-        //    return RedirectToAction(nameof(Index));
+        //    if (ModelState.IsValid)
+        //    {
+        //        await _authorRepository.AddAuthorAsync(authorDto);
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    return View(authorDto);
         //}
-        // Edit GET
-        public async Task<IActionResult> Edit(int id)
+
+        [HttpGet]
+        public async Task<IActionResult> EditAuthor(int id)
         {
             var author = await _authorRepository.GetAuthorByIdAsync(id);
             if (author == null)
+            {
                 return NotFound();
-
-            // Pass the author data and set IsEdit flag to true
-            ViewBag.IsEdit = true;
-            ViewBag.Author = author;
+            }
             return View(author);
         }
 
         // Edit POST
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, AuthorDto authorDto)
+        public async Task<IActionResult> EditAuthor(int id, AuthorDto authorDto)
         {
-            if (id != authorDto.AuthorId || !ModelState.IsValid)
+            if (!ModelState.IsValid)
+            {
                 return BadRequest();
+            }
 
-            await _authorRepository.UpdateAuthorAsync(id, authorDto);
-            return RedirectToAction(nameof(Index));
+            var success = await _authorRepository.UpdateAuthorAsync(id, authorDto);
+            if (success)
+            {
+                ViewBag.msg = "Author updated successfully!";
+                return RedirectToAction("Index");
+            }
+
+            ViewBag.msg = "Error updating Author!";
+            return View(authorDto);
+           
         }
 
+
+      
         // Delete GET
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> DeleteAuthor(int id)
         {
             var author = await _authorRepository.GetAuthorByIdAsync(id);
             if (author == null)

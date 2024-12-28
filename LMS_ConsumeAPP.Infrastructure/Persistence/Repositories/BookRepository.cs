@@ -1,9 +1,9 @@
 ﻿using LMS_ConsumeAPP.Application.DTOs.BookDTO;
 using LMS_ConsumeAPP.Application.Interface.Repositories.Book;
-
 using LMS_ConsumeAPP.Domain.Model;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
+using System.Text;
 
 namespace LMS_ConsumeAPP.Infrastructure.Persistence.Repositories
 {
@@ -22,7 +22,7 @@ namespace LMS_ConsumeAPP.Infrastructure.Persistence.Repositories
 
         public async Task<IEnumerable<Book>> GetAllBooksAsync()
         {
-            var response = await _client.GetAsync("Book");
+            var response = await _client.GetAsync("Books");
             if (response.IsSuccessStatusCode)
             {
                 var result = await response.Content.ReadAsStringAsync();
@@ -33,7 +33,8 @@ namespace LMS_ConsumeAPP.Infrastructure.Persistence.Repositories
 
         public async Task<BookDto> GetBookByIdAsync(int id)
         {
-            var response = await _client.GetAsync($"Book/{id}");
+            var response = await _client.GetAsync($"Books/{id}");
+            
             if (response.IsSuccessStatusCode)
             {
                 var result = await response.Content.ReadAsStringAsync();
@@ -44,37 +45,31 @@ namespace LMS_ConsumeAPP.Infrastructure.Persistence.Repositories
 
         public async Task<bool> AddBookAsync(BookDto bookDto)
         {
-            var form = new MultipartFormDataContent
-            {
-                { new StringContent(bookDto.Title), "Title" },
-                { new StringContent(bookDto.Genre), "Genre" },
-                { new StringContent(bookDto.ISBN), "ISBN" },
-                { new StringContent(bookDto.Quantity.ToString()), "Quantity" },
-                { new StringContent(string.Join(",", bookDto.Authors)), "Authors" }
-            };
+            var json = JsonConvert.SerializeObject(bookDto);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await _client.PostAsync("Book/", form);
+            var response = await _client.PostAsync("Books/", content);
             return response.IsSuccessStatusCode;
         }
 
         public async Task<bool> UpdateBookAsync(int id, BookDto bookDto)
         {
-            var form = new MultipartFormDataContent
-            {
-                { new StringContent(bookDto.Title), "Title" },
-                { new StringContent(bookDto.Genre), "Genre" },
-                { new StringContent(bookDto.ISBN), "ISBN" },
-                { new StringContent(bookDto.Quantity.ToString()), "Quantity" },
-                { new StringContent(string.Join(",", bookDto.Authors)), "Authors" }
-            };
+            var json = JsonConvert.SerializeObject(bookDto);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await _client.PutAsync($"Book/{id}", form);
+            var response = await _client.PutAsync($"Books/{id}", content);
+            if (!response.IsSuccessStatusCode)
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                Console.WriteLine($"Error: {errorContent}");
+            }
+
             return response.IsSuccessStatusCode;
         }
 
         public async Task<bool> DeleteBookAsync(int id)
         {
-            var response = await _client.DeleteAsync($"Book/{id}");
+            var response = await _client.DeleteAsync($"Books/{id}");
             return response.IsSuccessStatusCode;
         }
     }

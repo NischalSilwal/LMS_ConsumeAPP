@@ -80,11 +80,12 @@ namespace LMS_ConsumeAPP.Infrastructure.Persistence.Services.BookServices
             string authorIdsString = string.Join(",", bookDto.AuthorIds);
             var form = new MultipartFormDataContent
             {
+                { new StringContent(bookDto.BookId.ToString()), "BookId" },
                 { new StringContent(bookDto.Title), "Title" },
                 { new StringContent(bookDto.Genre), "Genre" },
                 { new StringContent(bookDto.ISBN), "ISBN" },
                 { new StringContent(bookDto.Quantity.ToString()), "Quantity" },
-                    { new StringContent(authorIdsString), "AuthorIds" }
+                { new StringContent(authorIdsString), "AuthorIds" }
             };
 
             

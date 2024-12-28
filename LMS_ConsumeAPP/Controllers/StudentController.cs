@@ -73,7 +73,6 @@ namespace LMS_ConsumeAPP.Controllers
         }
 
         [HttpPost]
-        [HttpPost]
         public async Task<IActionResult> EditStudent(int id, AddStudentDto addStudentDto)
         {
             var token = _httpContextAccessor.HttpContext.Session.GetString("JWToken");
@@ -81,11 +80,11 @@ namespace LMS_ConsumeAPP.Controllers
             {
                 return RedirectToAction("Login", "Account");
             }
-            if (!ModelState.IsValid)
-            {
-                ViewBag.msg = "Invalid input";
-                return View(addStudentDto);
-            }
+            //if (!ModelState.IsValid)
+            //{
+            //    ViewBag.msg = "Invalid input";
+            //    return View(addStudentDto);
+            //}
 
             var success = await _studentService.UpdateStudentAsync(id, addStudentDto);
             if (success)

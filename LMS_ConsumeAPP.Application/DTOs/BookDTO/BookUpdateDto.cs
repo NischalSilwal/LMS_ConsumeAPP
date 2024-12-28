@@ -13,6 +13,7 @@ namespace LMS_ConsumeAPP.Application.DTOs.BookDTO
         public string Genre { get; set; }
         public string ISBN { get; set; }
         public int Quantity { get; set; }
-        public List<int>? AuthorIds { get; set; } // Assuming AuthorIds is a list of author IDs
+        public List<int> AuthorIds { get; set; }
     }
+
 }

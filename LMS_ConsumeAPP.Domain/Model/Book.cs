@@ -13,8 +13,7 @@ namespace LMS_ConsumeAPP.Domain.Model
         public string Genre { get; set; }
         public string ISBN { get; set; }
         public int Quantity { get; set; }
-        public List<string> Authors { get; set; } = new List<string>();
-       // public int AuthorId { get; set; }
-
+        public List<Author> Authors { get; set; } = new List<Author>();
     }
 }
+
