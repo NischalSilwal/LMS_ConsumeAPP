@@ -3,6 +3,7 @@ using LMS_ConsumeAPP.Application.DTOs.BookDTO;
 using LMS_ConsumeAPP.Application.Interface.Repositories.Book;
 using LMS_ConsumeAPP.Domain.Model;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Threading.Tasks;
 
 namespace LMS_ConsumeAPP.Web.Controllers
@@ -89,10 +90,11 @@ namespace LMS_ConsumeAPP.Web.Controllers
             //{
             //    return NotFound();
             //}
-            
+            var json = JsonConvert.SerializeObject(bookDto);
 
-           
-                var isUpdated = await _bookRepository.UpdateBookAsync(bookDto.BookId, bookDto);
+
+
+            var isUpdated = await _bookRepository.UpdateBookAsync(bookDto.BookId, bookDto);
                 if (isUpdated)
                 {
                     return RedirectToAction(nameof(Index));

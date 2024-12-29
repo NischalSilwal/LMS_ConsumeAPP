@@ -33,37 +33,17 @@
                 </div>
 
                 <div class="form-group mb-3">
-                    <label asp-for="AuthorIds" class="control-label">Authors (Comma separated IDs)</label>
-                    <input type="text" id="authorIdsInput" class="form-control"
-                           value="@(Model.AuthorIds != null ? string.Join(",", Model.AuthorIds) : "")" />
-                    <input type="hidden" asp-for="AuthorIds" id="authorIdsHidden" />
-                    <span asp-validation-for="AuthorIds" class="text-danger"></span>
+                    <label asp-for="AuthorIdsAsString" class="control-label">Authors (Comma separated IDs)</label>
+                    <input asp-for="AuthorIdsAsString" class="form-control" />
+                    <span asp-validation-for="AuthorIdsAsString" class="text-danger"></span>
                     <small class="form-text text-muted">Enter author IDs separated by commas (e.g., 1,2,3)</small>
                 </div>
 
                 <div class="form-group">
-                    <input type="submit" value="Save" class="btn btn-primary" onclick="return prepareAuthorIds();" />
+                    <input type="submit" value="Save" class="btn btn-primary" />
                     <a asp-action="Index" class="btn btn-secondary">Back to List</a>
                 </div>
             </form>
         </div>
     </div>
 </div>
-
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-    <script>
-        function prepareAuthorIds() {
-            var authorIdsInput = document.getElementById('authorIdsInput').value;
-            var authorIds = authorIdsInput.split(',')
-                .map(id => id.trim())
-                .filter(id => id !== '')
-                .map(id => parseInt(id));
-
-            document.getElementById('authorIdsHidden').value = JSON.stringify(authorIds);
-            return true;
-        }
-    </script>
-}
