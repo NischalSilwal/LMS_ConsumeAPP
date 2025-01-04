@@ -24,6 +24,9 @@ namespace LMS_ConsumeAPP.Application.DTOs.BookDTO
                 ? new List<int>()
                 : value.Split(',').Select(id => int.Parse(id.Trim())).ToList();
         }
+
+      //  public List<AuthorDtoForBook> Authors { get; set; } = new List<AuthorDtoForBook>();
+
     }
 
 

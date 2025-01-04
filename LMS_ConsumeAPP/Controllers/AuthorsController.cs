@@ -1,6 +1,8 @@
 ﻿using LMS_ConsumeAPP.Application.DTOs.AuthorDTO;
+using LMS_ConsumeAPP.Application.DTOs.BookDTO;
 using LMS_ConsumeAPP.Application.Interface.Repositories.AuthorRepository;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace LMS_ConsumeAPP.Controllers
 {
@@ -91,27 +93,41 @@ namespace LMS_ConsumeAPP.Controllers
         // Edit POST
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditAuthor(int id, AuthorDto authorDto)
+        public async Task<IActionResult> EditAuthor(AuthorDto authorDto, string formInputBookIds)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest();
-            }
+                // Parse the comma-separated book IDs from user input
+                if (!string.IsNullOrWhiteSpace(formInputBookIds))
+                {
+                    authorDto.BookIds = formInputBookIds.Split(',').Select(int.Parse).ToList();
+                }
+                else
+                {
+                    authorDto.BookIds = new List<int>();
+                }
 
-            var success = await _authorRepository.UpdateAuthorAsync(id, authorDto);
-            if (success)
+                var success = await _authorRepository.UpdateAuthorAsync(authorDto.AuthorId, authorDto);
+                if (success)
+                {
+                    ViewBag.msg = "Author updated successfully!";
+                    return RedirectToAction("IndexAuthor");
+                }
+
+                ViewBag.msg = "Error updating Author!";
+                return View(authorDto);
+            }
+            catch (Exception ex)
             {
-                ViewBag.msg = "Author updated successfully!";
-                return RedirectToAction("Index");
+                // Log the exception
+                ModelState.AddModelError("", "An error occurred while updating the author.");
+                return View(authorDto);
             }
-
-            ViewBag.msg = "Error updating Author!";
-            return View(authorDto);
-           
         }
 
 
-      
+
+
         // Delete GET
         public async Task<IActionResult> DeleteAuthor(int id)
         {

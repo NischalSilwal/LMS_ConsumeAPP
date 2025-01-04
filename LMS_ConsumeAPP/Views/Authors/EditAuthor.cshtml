@@ -28,6 +28,14 @@
                 <span asp-validation-for="Bio" class="text-danger"></span>
             </div>
             <div class="form-group">
+    <label for="formInputBookIds" class="control-label">Book IDs (Comma-Separated)</label>
+    <input type="text" id="formInputBookIds" name="formInputBookIds" class="form-control"
+           value="@string.Join(",", Model.BookIds ?? new List<int>())" />
+    <span class="text-danger"></span>
+</div>
+
+
+            <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>

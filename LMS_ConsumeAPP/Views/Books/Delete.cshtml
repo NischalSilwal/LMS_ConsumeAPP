@@ -1,0 +1,51 @@
+﻿@model LMS_ConsumeAPP.Application.DTOs.BookDTO.GetByIdBookDto
+
+<div class="container mt-4">
+    <h2>Delete Book</h2>
+    <div class="alert alert-danger">
+        <h4>Are you sure you want to delete this book?</h4>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">Title</dt>
+                <dd class="col-sm-9">@Model?.Title ?? "N/A"</dd>
+
+                <dt class="col-sm-3">Genre</dt>
+                <dd class="col-sm-9">@Model?.Genre ?? "N/A"</dd>
+
+                <dt class="col-sm-3">ISBN</dt>
+                <dd class="col-sm-9">@Model?.ISBN ?? "N/A"</dd>
+
+                <dt class="col-sm-3">Quantity</dt>
+                <dd class="col-sm-9">@Model?.Quantity ?? 0</dd>
+
+                <dt class="col-sm-3">Authors</dt>
+                <dd class="col-sm-9">
+                    @if (Model?.Authors != null && Model.Authors.Any())
+                    {
+                        <ul>
+                            @foreach (var author in Model.Authors)
+                            {
+                                <li>
+                                    @author.Name
+                                    <span class="text-muted">(ID: @author.AuthorId)</span>
+                                </li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <span>N/A</span>
+                    }
+                </dd>
+            </dl>
+
+            <form asp-action="Delete">
+                <input type="hidden" asp-for="BookId" />
+                <button type="submit" class="btn btn-danger">Delete</button>
+                <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>

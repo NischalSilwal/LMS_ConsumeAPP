@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace LMS_ConsumeAPP.Infrastructure.Persistence.Repositories
 {
+    using LMS_ConsumeAPP.Application.DTOs.BookDTO;
     using LMS_ConsumeAPP.Domain.Model;
     using Newtonsoft.Json;
     using System.Net.Http.Headers;
@@ -42,6 +43,7 @@ namespace LMS_ConsumeAPP.Infrastructure.Persistence.Repositories
 
         public async Task<bool> UpdateAuthorAsync(int id, AuthorDto authorDto)
         {
+            var json = JsonConvert.SerializeObject(authorDto);
             var response = await _httpClient.PutAsJsonAsync($"{_baseUrl}/{id}", authorDto);
             return response.IsSuccessStatusCode;
         }

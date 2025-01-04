@@ -24,17 +24,6 @@ namespace LMS_ConsumeAPP.Web.Controllers
             return View(books);
         }
 
-        // GET: Books/Details/5
-        public async Task<IActionResult> Details(int id)
-        {
-            var book = await _bookRepository.GetBookByIdAsync(id);
-            if (book == null)
-            {
-                return NotFound();
-            }
-            return View(book);
-        }
-
         public IActionResult Create()
         {
             return View();
@@ -44,6 +33,7 @@ namespace LMS_ConsumeAPP.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(BookDto bookDto)
         {
+            var json = JsonConvert.SerializeObject(bookDto);
             if (ModelState.IsValid)
             {
                 
@@ -64,10 +54,6 @@ namespace LMS_ConsumeAPP.Web.Controllers
 
             return View(bookDto);
         }
-
-
-
-
 
         // GET: Books/Edit/5
         [HttpGet]
@@ -107,19 +93,6 @@ namespace LMS_ConsumeAPP.Web.Controllers
         // GET: Books/Delete/5
         public async Task<IActionResult> Delete(int id)
         {
-            var book = await _bookRepository.GetBookByIdAsync(id);
-            if (book == null)
-            {
-                return NotFound();
-            }
-            return View(book);
-        }
-
-        // POST: Books/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
             var isDeleted = await _bookRepository.DeleteBookAsync(id);
             if (isDeleted)
             {
@@ -127,5 +100,7 @@ namespace LMS_ConsumeAPP.Web.Controllers
             }
             return View();
         }
+
+       
     }
 }
