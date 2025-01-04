@@ -13,7 +13,7 @@ namespace LMS_ConsumeAPP.Application.Interface.Services.StudentService
         Task<IEnumerable<Student>> GetAllStudentsAsync();
         Task<StudentDto> GetStudentByIdAsync(int id);
         Task<bool> AddStudentAsync(AddStudentDto addStudentDto);
-        Task<bool> UpdateStudentAsync(int id, AddStudentDto addStudentDto);
+        Task<bool> UpdateStudentAsync(int id, StudentDto StudentDto);
         Task<bool> DeleteStudentAsync(int id);
     }
 }

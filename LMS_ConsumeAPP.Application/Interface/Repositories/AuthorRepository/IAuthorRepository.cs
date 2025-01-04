@@ -12,7 +12,7 @@ namespace LMS_ConsumeAPP.Application.Interface.Repositories.AuthorRepository
     {
         Task<IEnumerable<AuthorDto>> GetAllAuthorsAsync();
         Task<AuthorDto> GetAuthorByIdAsync(int id);
-        Task<int> AddAuthorAsync(AuthorDto authorDto);
+        Task<bool> AddAuthorAsync(AuthorDto authorDto);
         Task<bool> UpdateAuthorAsync(int id, AuthorDto authorDto);
         Task<bool> DeleteAuthorAsync(int id);
     }

@@ -34,9 +34,9 @@ namespace LMS_ConsumeAPP.Infrastructure.Persistence.Services.StudentService
             return await _studentRepository.AddStudentAsync(addStudentDto);
         }
 
-        public async Task<bool> UpdateStudentAsync(int id, AddStudentDto addStudentDto)
+        public async Task<bool> UpdateStudentAsync(int id, StudentDto StudentDto)
         {
-            return await _studentRepository.UpdateStudentAsync(id, addStudentDto);
+            return await _studentRepository.UpdateStudentAsync(id, StudentDto);
         }
 
         public async Task<bool> DeleteStudentAsync(int id)

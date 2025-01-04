@@ -36,48 +36,53 @@ namespace LMS_ConsumeAPP.Controllers
         {
             var authorDto = new AuthorDto
             {
-                BookIds = new List<int>()
+                BookIds = new List<int>() // Ensure this is initialized
             };
             return View(authorDto);
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateAuthor(AuthorDto authorDto)
+        public async Task<IActionResult> CreateAuthor(AuthorDto authorDto, string formInputBookIds)
         {
+            //  var json = JsonConvert.SerializeObject(authorDto);
+
             try
             {
-                // Initialize BookIds if null
-                authorDto.BookIds ??= new List<int>();
-
-                // Remove BookIds validation errors since it's optional
-                ModelState.Remove("BookIds");
-
-                if (ModelState.IsValid)
+                // Parse book IDs
+                if (!string.IsNullOrWhiteSpace(formInputBookIds))
                 {
-                    var authorId = await _authorRepository.AddAuthorAsync(authorDto);
-                    return RedirectToAction(nameof(IndexAuthor));
+                    authorDto.BookIds = formInputBookIds
+                                        .Split(',')
+                                        .Select(id => int.TryParse(id, out int result) ? result : throw new FormatException())
+                                        .ToList();
                 }
-                return View(authorDto);
+                else
+                {
+                    authorDto.BookIds = new List<int>();
+                }
+                var json = JsonConvert.SerializeObject(authorDto);
+                // Add author via repository
+                var success = await _authorRepository.AddAuthorAsync(authorDto);
+                if (success)
+                {
+                    ViewBag.SuccessMessage = "Author created successfully!";
+                    return RedirectToAction("IndexAuthor");
+                }
+                else
+                {
+                    ViewBag.ErrorMessage = "Failed to create author. Please try again.";
+                }
             }
             catch (Exception ex)
             {
-                // Log the exception
+                // Log exception if needed
                 ModelState.AddModelError("", "An error occurred while creating the author.");
-                return View(authorDto);
             }
+
+
+            return View(authorDto);
         }
-        //// Create POST
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> CreateAuthor(AuthorDto authorDto)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        await _authorRepository.AddAuthorAsync(authorDto);
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    return View(authorDto);
-        //}
 
         [HttpGet]
         public async Task<IActionResult> EditAuthor(int id)
@@ -124,9 +129,6 @@ namespace LMS_ConsumeAPP.Controllers
                 return View(authorDto);
             }
         }
-
-
-
 
         // Delete GET
         public async Task<IActionResult> DeleteAuthor(int id)

@@ -34,11 +34,12 @@ namespace LMS_ConsumeAPP.Infrastructure.Persistence.Repositories
             return await _httpClient.GetFromJsonAsync<AuthorDto>($"{_baseUrl}/{id}");
         }
 
-        public async Task<int> AddAuthorAsync(AuthorDto authorDto)
+        public async Task<bool> AddAuthorAsync(AuthorDto authorDto)
         {
+            var json = JsonConvert.SerializeObject(authorDto);
             var response = await _httpClient.PostAsJsonAsync(_baseUrl, authorDto);
             response.EnsureSuccessStatusCode();
-            return await response.Content.ReadFromJsonAsync<int>();
+            return response.IsSuccessStatusCode;
         }
 
         public async Task<bool> UpdateAuthorAsync(int id, AuthorDto authorDto)

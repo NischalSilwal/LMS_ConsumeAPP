@@ -172,14 +172,9 @@
                         <td>@student.ContactNumber</td>
                         <td>@student.Department</td>
                         <td class="text-center">
-                              <form asp-action="EditStudent" method="post" style="display:inline;">
-                                <input type="hidden" name="StudentId" value="@student.StudentId" />
-                                <button type="submit" class="btn btn-Action" style="background:#B7A522; margin-right:8px;">Edit</button>
-                            </form>
-                            <form asp-action="DeleteStudent" method="post" style="display:inline;">
-                                <input type="hidden" name="id" value="@student.StudentId" />
-                                <button type="submit" class="btn btn-Action" style="background:#D13A3D;">Delete</button>
-                            </form>
+                            <a asp-action="EditStudent" asp-route-id="@student.StudentId" class="btn btn-sm btn-warning">Edit</a>
+                            @* <a asp-action="Details" asp-route-id="@item.BookId" class="btn btn-sm btn-info">Details</a> *@
+                            <a asp-action="DeleteStudent" asp-route-id="@student.StudentId" class="btn btn-sm btn-danger">Delete</a>
                         </td>
                     </tr>
                 }

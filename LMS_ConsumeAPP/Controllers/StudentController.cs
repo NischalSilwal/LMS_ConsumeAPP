@@ -1,6 +1,7 @@
 ﻿using LMS_ConsumeAPP.Application.DTOs.Student;
 using LMS_ConsumeAPP.Application.Interface.Services.StudentService;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace LMS_ConsumeAPP.Controllers
 {
@@ -61,19 +62,19 @@ namespace LMS_ConsumeAPP.Controllers
             {
                 return RedirectToAction("Login", "Account");
             }
-            var addStudentDto = new AddStudentDto
-            {
-                Name = studentDto.Name,
-                Email = studentDto.Email,
-                ContactNumber = studentDto.ContactNumber,
-                Department = studentDto.Department
-            };
+            //var addStudentDto = new AddStudentDto
+            //{
+            //    Name = studentDto.Name,
+            //    Email = studentDto.Email,
+            //    ContactNumber = studentDto.ContactNumber,
+            //    Department = studentDto.Department
+            //};
 
-            return View(addStudentDto);
+            return View(studentDto);
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditStudent(int id, AddStudentDto addStudentDto)
+        public async Task<IActionResult> EditStudent(StudentDto studentDto)
         {
             var token = _httpContextAccessor.HttpContext.Session.GetString("JWToken");
             if (string.IsNullOrEmpty(token))
@@ -85,8 +86,8 @@ namespace LMS_ConsumeAPP.Controllers
             //    ViewBag.msg = "Invalid input";
             //    return View(addStudentDto);
             //}
-
-            var success = await _studentService.UpdateStudentAsync(id, addStudentDto);
+            var json = JsonConvert.SerializeObject(studentDto);
+            var success = await _studentService.UpdateStudentAsync(studentDto.StudentId, studentDto);
             if (success)
             {
                 ViewBag.msg = "Student updated successfully!";
@@ -94,10 +95,10 @@ namespace LMS_ConsumeAPP.Controllers
             }
 
             ViewBag.msg = "Error updating student!";
-            return View(addStudentDto);
+            return View(studentDto);
         }
 
-        [HttpPost]
+       
         public async Task<IActionResult> DeleteStudent(int id)
         {
             var token = _httpContextAccessor.HttpContext.Session.GetString("JWToken");

@@ -1,0 +1,44 @@
+﻿@model LMS_ConsumeAPP.Application.DTOs.AuthorDTO.AuthorDto
+
+@{
+    ViewData["Title"] = "Create Author";
+}
+
+<h1>Create Author</h1>
+
+<div>
+    @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+    {
+        <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
+    }
+</div>
+
+<form asp-action="CreateAuthor" method="post">
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Bio"></label>
+        <textarea asp-for="Bio" class="form-control"></textarea>
+        <span asp-validation-for="Bio" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="formInputBookIds" class="control-label">Book IDs (Comma-Separated)</label>
+        <input type="text" id="formInputBookIds" name="formInputBookIds" class="form-control"
+               value="@string.Join(",", Model.BookIds ?? new List<int>())" />
+        <!-- Using ModelState to safely check for errors -->
+        <span class="text-danger">
+            @if (ViewData.ModelState.ContainsKey("formInputBookIds") && ViewData.ModelState["formInputBookIds"].Errors.Any())
+            {
+                @ViewData.ModelState["formInputBookIds"].Errors[0].ErrorMessage
+            }
+        </span>
+    </div>
+    <button type="submit" class="btn btn-primary">Create</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
