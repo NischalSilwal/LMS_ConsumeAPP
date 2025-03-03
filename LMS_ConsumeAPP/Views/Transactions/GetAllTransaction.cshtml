@@ -9,151 +9,242 @@
         margin: 0;
         padding: 0;
         height: 100%;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f5f5f5;
     }
 
     .header {
-        height: 71px;
-        background-color: #255D81;
-        color: white;
-        padding: 0 40px;
+        height: 60px;
+        background-color: white; /* Changed to white */
+        color: black; /* Changed to black */
+        padding: 0 20px;
         display: flex;
         align-items: center;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
         .header img {
-            width: 35px;
-            height: 35px;
+            width: 24px;
+            height: 24px;
             margin-right: 10px;
         }
 
         .header h2 {
             margin: 0;
-            margin: 0;
-            font-family: 'Montserrat', sans-serif; /* Apply Montserrat Font */
+            font-weight: 500;
+            font-size: 20px;
         }
 
-    .table-wrapper {
-        background: #F2F2F2;
-        padding: 35px 40px;
-        height: calc(100% - 71px);
-        overflow-y: auto;
+    .content-wrapper {
+        padding: 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .card {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+
+    .card-title {
+        font-size: 18px;
+        font-weight: 500;
+        margin-top: 0;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #555;
+        }
+
+    .form-control {
+        width: 100%;
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        box-sizing: border-box;
+        font-size: 14px;
+    }
+
+    select.form-control {
+        height: 38px;
+    }
+
+    .form-row {
+        display: flex;
+        flex-wrap: wrap;
+        margin: 0 -10px;
+    }
+
+    .form-col {
+        flex: 1;
+        padding: 0 10px;
+        min-width: 200px;
+    }
+
+    .btn {
+        padding: 8px 16px;
+        font-size: 14px;
+        font-weight: 500;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+
+    .btn-primary {
+        background-color: #255D81;
+        color: white;
+    }
+
+        .btn-primary:hover {
+            background-color: #1d4a68;
+        }
+
+    .table-container {
+        overflow-x: auto;
     }
 
     .table {
         width: 100%;
-        background-color: #E3E3E3;
-        border-radius: 8px;
         border-collapse: collapse;
-        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        background-color: white;
     }
 
-
-
-        .table th, .table td {
-            padding: 12px;
-            text-align: left;
-        }
-
         .table th {
-            background-color: #C7B303; /* Yellow for table header */
-            color: white;
-            font-weight: bold;
+            background-color: #f5f5f5;
+            color: #333;
+            font-weight: 600;
+            text-align: left;
+            padding: 12px 15px;
+            border-bottom: 2px solid #ddd;
         }
 
         .table td {
-            background-color: #D9D9D9;
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
         }
 
-    .btn-action {
-        padding: 8px 20px;
-        font-size: 14px;
-        font-weight: 600;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
+        .table tr:hover {
+            background-color: #f9f9f9;
+        }
+
+    .action-buttons {
+        display: flex;
+        gap: 8px;
     }
 
     .btn-edit {
-        background-color: #C7B303; /* Yellow for Edit */
+        background-color: #0078D4;
         color: white;
     }
 
     .btn-details {
-        background-color: #255D81; /* Blue for Details */
+        background-color: #255D81;
         color: white;
     }
 
     .btn-delete {
-        background-color: #F44336; /* Red for Delete */
+        background-color: #d9534f;
         color: white;
     }
 
-    .btn-action:hover {
-        opacity: 0.9;
-    }
-
+        .btn-edit:hover, .btn-details:hover, .btn-delete:hover {
+            opacity: 0.9;
+        }
 </style>
 
 <div class="header">
     <img src="~/images/NavbarLogo/Issue.png" alt="Transaction Icon">
-    <h2 style="margin: 0 0 0 10px;">Transaction</h2>
+    <h2>Transaction Management</h2>
 </div>
 
-<div class="table-wrapper">
-    <!-- Add Transaction Form -->
-    <form asp-action="AddTransaction" asp-controller="Transaction" method="post" style="margin-bottom: 20px;">
-        <div>
-            <label>Student Name:</label>
-            <input type="text" name="StudentName" required />
-        </div>
-        <div>
-            <label>Username:</label>
-            <input type="text" name="Username" required />
-        </div>
-        <div>
-            <label>Book Title:</label>
-            <input type="text" name="BookTitle" required />
-        </div>
-        <div>
-            <label>Transaction Type:</label>
-            <select name="TransactionType" required>
-                <option value="Issue">Issue</option>
-                <option value="Return">Return</option>
-            </select>
-        </div>
-        <button type="submit" class="btn-action btn-edit">Add Transaction</button>
-    </form>
+<div class="content-wrapper">
+    <div class="card">
+        <h3 class="card-title">Add New Transaction</h3>
+        <form asp-action="AddTransaction" asp-controller="Transaction" method="post">
+            <div class="form-row">
+                <div class="form-col">
+                    <div class="form-group">
+                        <label>Student Name:</label>
+                        <input type="text" name="StudentName" class="form-control" required />
+                    </div>
+                </div>
+                <div class="form-col">
+                    <div class="form-group">
+                        <label>Username:</label>
+                        <input type="text" name="Username" class="form-control" required />
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-col">
+                    <div class="form-group">
+                        <label>Book Title:</label>
+                        <input type="text" name="BookTitle" class="form-control" required />
+                    </div>
+                </div>
+                <div class="form-col">
+                    <div class="form-group">
+                        <label>Transaction Type:</label>
+                        <select name="TransactionType" class="form-control" required>
+                            <option value="Issue">Issue</option>
+                            <option value="Return">Return</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Transaction</button>
+        </form>
+    </div>
 
-    <!-- Display Transactions Table -->
-    <table class="table">
-        <thead>
-            <tr>
-                <th>@Html.DisplayNameFor(model => model.First().TransactionId)</th>
-                <th>@Html.DisplayNameFor(model => model.First().StudentName)</th>
-                <th>@Html.DisplayNameFor(model => model.First().Username)</th>
-                <th>@Html.DisplayNameFor(model => model.First().BookTitle)</th>
-                <th>@Html.DisplayNameFor(model => model.First().TransactionType)</th>
-                <th>@Html.DisplayNameFor(model => model.First().Date)</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>@item.TransactionId</td>
-                    <td>@item.StudentName</td>
-                    <td>@item.Username</td>
-                    <td>@item.BookTitle</td>
-                    <td>@item.TransactionType</td>
-                    <td>@item.Date.ToString("g")</td>
-                    <td>
-                        @Html.ActionLink("Edit", "Edit", new { id = item.TransactionId }, new { @class = "btn-action btn-edit" }) |
-                        @Html.ActionLink("Details", "Details", new { id = item.TransactionId }, new { @class = "btn-action btn-details" }) |
-                        @Html.ActionLink("Delete", "Delete", new { id = item.TransactionId }, new { @class = "btn-action btn-delete" })
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    <div class="card">
+        <h3 class="card-title">Transaction Details</h3>
+        <div class="table-container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.First().TransactionId)</th>
+                        <th>@Html.DisplayNameFor(model => model.First().StudentName)</th>
+                        <th>@Html.DisplayNameFor(model => model.First().Username)</th>
+                        <th>@Html.DisplayNameFor(model => model.First().BookTitle)</th>
+                        <th>@Html.DisplayNameFor(model => model.First().TransactionType)</th>
+                        <th>@Html.DisplayNameFor(model => model.First().Date)</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.TransactionId</td>
+                            <td>@item.StudentName</td>
+                            <td>@item.Username</td>
+                            <td>@item.BookTitle</td>
+                            <td>@item.TransactionType</td>
+                            <td>@item.Date.ToString("g")</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <a href="@Url.Action("Edit", new { id = item.TransactionId })" class="btn btn-edit">Edit</a>
+                                    <a href="@Url.Action("Details", new { id = item.TransactionId })" class="btn btn-details">Details</a>
+                                    <a href="@Url.Action("Delete", new { id = item.TransactionId })" class="btn btn-delete">Delete</a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
